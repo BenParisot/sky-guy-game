@@ -13,9 +13,7 @@ window.addEventListener('load', function(){
         constructor(){
             this.keys = [];
             window.addEventListener('keydown', e => {
-                if (this.keys.length > 0) {
-                    this.keys.splice(this.keys.indexOf(e.key), 1);
-                }
+                if (this.keys.indexOf(e.key) > -1) this.keys.splice(this.keys.indexOf(e.key), 1);
                 if (    e.key === 'ArrowDown' || 
                         e.key === 'ArrowUp' ||
                         e.key === 'ArrowRight' ||
@@ -83,14 +81,19 @@ window.addEventListener('load', function(){
              }
 
              //controls
-             if (input.keys.indexOf('ArrowRight') > -1) {
-                 this.speed = 5;
+             if (input.keys.indexOf('ArrowUp') > -1 && this.onGround()) {
+                this.velocityY -= 30;
+                if (input.keys.indexOf('ArrowRight') > -1) {
+                    this.speed = 3;
+                } 
+             } else if (input.keys.indexOf('ArrowRight') > -1) {
+                console.log('input.keys', input.keys);
+                 this.speed = 6;
              } else if (input.keys.indexOf('ArrowLeft') > -1) {
-                this.speed = -5;
-            } else if (input.keys.indexOf('ArrowUp') > -1 && this.onGround()) {
-                this.velocityY -= 30; 
-            } 
-            else { 
+                console.log('input.keys', input.keys);
+
+                this.speed = -6;
+            }  else { 
                 this.speed = 0; 
             }
 
@@ -232,7 +235,7 @@ window.addEventListener('load', function(){
         displayStatusText(ctx);
         player.draw(ctx);
         player.update(input, deltaTime, enemies);
-        handleEnemies(deltaTime);
+        // handleEnemies(deltaTime);
         if (!gameOver) {
             requestAnimationFrame(animate);
         } else displayStatusText(ctx);
